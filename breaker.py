@@ -1,6 +1,6 @@
 import pygame
-
-
+from breaker_util import Ball, Brick, Grid
+from pygame import mixer
 """
 
 
@@ -17,20 +17,27 @@ player controls
 
 
 """
+
 pygame.display.init()
 
-background_colour = (0, 0, 0) 
+
+mixer.init() 
+# mixer.music.load("RLbeat2.mp3") 
+# mixer.music.set_volume(0.7) 
+# mixer.music.play(-1, 0.0) 
+
+ 
 rectangle_color = (255,0,0)
   
 # Define the dimensions of 
 # screen object(width,height) 
-screen = pygame.display.set_mode((500, 700)) 
+
   
 # Set the caption of the screen 
 pygame.display.set_caption('brick breaker') 
 
-# Fill the background colour to the screen 
-screen.fill(background_colour)
+
+
 
 move_left_ = False
 move_right_ = False
@@ -38,96 +45,6 @@ move_right_ = False
 clock = pygame.time.Clock()
 
 
-def my_deep_copy(array):
-    deep_array = []
-    for point in array:
-        deep_array.append(point)
-    return deep_array
-
-""" CLASSES  CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES"""
-
-class Ball:
-    pass
-
-class Brick:
-	def __init__(self, left, top, width, height):
-		# self.x = 225 # half of window width, we can worry abt resizing later
-		self.previleft = 0 #need this to store previous left and change previous brick to black
-		self.left = left
-		self.top = top
-		self.width = width
-		self.height = height
-		self.rect = 0
-		
-		self.starter = 0
-		
-		
-		
-	def create_brick(self):
-		if self.starter != 0: #only goes through after creating for the first time
-			#instead of deleting, what if i just create a whole black canvas to cover?
-			self.change_brick() #change rect to black
-			self.starter = 0 #delete is a tkinter thing
-		color = (255, 255, 255)
-		left = self.left
-		top = self.top
-		width = self.width
-		height = self.height
-		brick = pygame.draw.rect(screen, color, pygame.Rect(left, top, width, height))
-		self.rect = brick
-		self.starter = self #need this to delete later after redrawing
-		
-	def change_brick(self): #this can be used to change cells to black to cover
-		color = (0,0,0) #black
-		left = self.previleft
-		top = self.top
-		width = self.width
-		height = self.height
-		new_brick = pygame.draw.rect(screen, color, pygame.Rect(left, top, width, height))
-		# print("redrawing")
-		
-	def controls(self, event):
-		global running, move_left_, move_right_
-		
-		# pygame.key.K_RIGHT.set_repeat()
-		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_ESCAPE: #ESCAPE = QUIT BUTTON
-				running = False
-			# elif event.key == pygame.K_LEFT:
-			# 	self.move_left()
-			# elif event.key == pygame.K_RIGHT:
-			# 	self.move_right()
-			
-				
-
-			
-				
-			# brick.move #brick object will be redrawn
-		
-	def move_left(self):
-		self.previleft = self.left
-		self.left -= 1
-		print("left")
-		self.create_brick()
-		
-	def move_right(self):
-		self.previleft = self.left
-		self.left += 1
-		print("right")
-		self.create_brick()
-	
-		
-
-class Grid:
-	def __init__(self, brick):
-		self.width = 500 #window width
-		self.height = 700 #window height
-		self.brick = brick
-
-
-
-
-
 
 
 
@@ -141,8 +58,13 @@ class Grid:
 
 
 
-brick = Brick(225, 600, 50, 10)
+brick = Brick(200, 600, 100, 10)
 brick.create_brick()
+
+grid = Grid(brick)
+grid.generate_walls()
+
+grid.ball.draw_ball()
 
 
 # grid = Grid(brick)
@@ -154,6 +76,8 @@ running = True
 
 
 while running:
+	clock.tick(60)
+	grid.ball.physics_move()
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
