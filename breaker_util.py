@@ -28,12 +28,14 @@ class Ball:
 		self.center = (250, 350)
 		self.radius = 5
 		self.circle = 0
-		self.x = 250
-		self.y = 350
+		self.circlec = 0 #canvas circle
+		self.x = random.randint(250,300)
+		self.y = random.randint(350, 400)
 		self.prevx = 0
 		self.prevy = 0
 		self.ball_XChange = random.choice((-1,1)) #can set to random with randint(1,-1) or smthing like that
 		self.ball_YChange = -1
+		self.brick = 0 #should be a rect for colliding
 		
 		
 
@@ -45,12 +47,16 @@ class Ball:
 		if self.y >= 700 or self.y <= 0: 
 			self.ball_YChange *= -1
 			print("bounce")
+		if self.circlec.colliderect(self.brick.outline):
+			# self.ball_XChange *= -1
+			self.ball_YChange *= -1
+			print("bounce")
 
 		self.prevx = self.x
 		self.prevy = self.y
 		self.x += self.ball_XChange
 		self.y += self.ball_YChange
-		self.draw_ball() 
+		self.draw_ball() #redrawing ball
 		
 	def draw_ball(self):
 		if self.circle != 0: #this is for moving the ball
@@ -60,7 +66,7 @@ class Ball:
 		center = (self.x, self.y)
 		radius = self.radius
 		drawn_ball = pygame.draw.circle(screen, (255,255,255), center, radius)
-		self.circle = drawn_ball
+		self.circlec = drawn_ball
 		self.circle = self
 		
 	def change_ball(self):
@@ -90,6 +96,8 @@ class Brick:
 		self.width = width
 		self.height = height
 		self.rect = 0
+		self.outline = 0
+	
 		
 		self.starter = 0
 		
@@ -106,8 +114,10 @@ class Brick:
 		top = self.top
 		width = self.width
 		height = self.height
+		brick_outline = pygame.draw.rect(screen, (0,0,0), pygame.Rect(left-1, top-1, width+2, height+2))
 		brick = pygame.draw.rect(screen, color, pygame.Rect(left, top, width, height))
-		self.rect = brick
+		self.outline = brick_outline
+		self.rect = brick #we put it as brick outline so that ball does not draw over brick
 		self.starter = self #need this to delete later after redrawing
 		
 	def change_brick(self): #this can be used to change cells to black to cover
@@ -117,6 +127,7 @@ class Brick:
 		width = self.width
 		height = self.height
 		new_brick = pygame.draw.rect(screen, color, pygame.Rect(left, top, width, height))
+		new_outline = pygame.draw.rect(screen, color, pygame.Rect(left-1, top-1, width+2, height+2))
 		# print("redrawing")
 		
 	def controls(self, event):
@@ -161,14 +172,15 @@ class Grid:
 		self.wall_l = 0
 		self.wall_r = 0
 		self.ball = ball
+		self.ball.brick = self.my_brick #for collidepoint w ball
 	
 		
 	def generate_grid(self):#generate sht ton of bricks and ball
 		self.ball.draw_ball()
 	
 	def generate_walls(self):
-		wall_l = pygame.draw.line(screen, (255,0,0), (1,0), (1, 700))
-		wall_r = pygame.draw.line(screen, (255,0,0), (499,0), (499, 700))
+		wall_l = pygame.draw.line(screen, (0,0,0), (1,0), (1, 700))
+		wall_r = pygame.draw.line(screen, (0,0,0), (499,0), (499, 700))
 		self.wall_l = wall_l
 		self.wall_r = wall_r
 		

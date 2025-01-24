@@ -14,6 +14,9 @@ player controls
     -should be controlled by keyboard
 
 
+multiple balls mode?
+
+go through 3 levels
 
 
 """
@@ -62,9 +65,11 @@ brick = Brick(200, 600, 100, 10)
 brick.create_brick()
 
 grid = Grid(brick)
+# grid.my_brick.create_brick()
 grid.generate_walls()
 
 grid.ball.draw_ball()
+
 
 
 # grid = Grid(brick)
@@ -76,7 +81,7 @@ running = True
 
 
 while running:
-	clock.tick(60)
+	clock.tick(120)
 	grid.ball.physics_move()
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
