@@ -19,6 +19,10 @@ multiple balls mode?
 go through 3 levels
 
 
+need to implement physics and collision for side of bricks
+
+
+
 """
 
 pygame.display.init()
@@ -62,12 +66,12 @@ clock = pygame.time.Clock()
 
 
 brick = Brick(200, 600, 100, 10)
-brick.create_brick()
+brick.create_stbrick()
 
 grid = Grid(brick)
 # grid.my_brick.create_brick()
 grid.generate_walls()
-
+grid.generate_grid() 
 grid.ball.draw_ball()
 
 
