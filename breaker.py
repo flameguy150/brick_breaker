@@ -68,13 +68,15 @@ paddle = Brick(200, 600, 100, 10) #paddle
 paddle.generate_paddle()
 
 ball = Ball()
+# ball2 = Ball()
+# balls = [ball, ball2]
+# for ball in balls:
 ball.generate_ball()
 
 grid = Grid(paddle, ball)
-# grid.my_brick.create_brick()
-grid.generate_walls()
+
 grid.generate_grid() 
-# grid.ball.draw_ball()
+
 
 
 
@@ -88,6 +90,7 @@ running = True
 
 while running:
 	clock.tick(120)
+	# for ball in balls:
 	ball.physics_move()
 	for event in pygame.event.get():
 		# grid.ball.physics_move() #interesting mechanic

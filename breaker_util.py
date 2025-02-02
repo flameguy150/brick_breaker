@@ -48,11 +48,6 @@ class Ball:
 		
 
 	def physics_move(self):
-		# if pygame.Rect.collideobjects(self.circlec, self.grid.bricks):
-		# 	# self.ball_XChange *= -1
-		# 	self.ball_YChange *= -1
-		# 	print("bounce")
-		# 	print("")
 		global bricks_remove
 		for brick in self.bricks:
 			if self.circlec.colliderect(brick.outline): #if ball collides with a level brick
@@ -168,8 +163,6 @@ class Ball:
 		bottomright = (brick.bottom, brick.right)
 		bottomleft = (brick.bottom, brick.left)
 		corners = [topright, topleft, bottomright, bottomleft]
-		# for corner in corners:
-		# 	pygame.draw.circle(screen, (0, 255, 0), corner, 3)  # Green dots for corners
 		#euclidian distance = distance from center of circle and each corner, if distance <= radius, it is colliding
 		#meaning it should return true and the specific point is is colliding with
 		#otherwise, returns false
@@ -183,11 +176,7 @@ class Ball:
 			if distance <= radius:
 				return True, (x2, y2)
 		return False, None #returns nothing
-	
-	# def create_ball(self): #reason i put this in the grid class is so i can have a ball object to collide w rects
-	# 	center = self.center
-	# 	radius = self.radius
-	# 	drawn_ball = pygame.draw.circle(screen, (255,255,255), center, radius)
+
 		
 		
 	
@@ -245,16 +234,6 @@ class Brick:
 		height = self.height
 		new_brick = pygame.draw.rect(screen, color, pygame.Rect(left, top, width, height))
 		new_outline = pygame.draw.rect(screen, color, pygame.Rect(left-1, top-1, width+2, height+2))
-		
-	# def controls(self, event):
-	# 	global running, move_left_, move_right_
-		
-	# 	# pygame.key.K_RIGHT.set_repeat()
-		
-	# 		# elif event.key == pygame.K_LEFT:
-	# 		# 	self.move_left()
-	# 		# elif event.key == pygame.K_RIGHT:
-	# 		# 	self.move_right()
             
 		
 	def move_left(self):
@@ -300,20 +279,17 @@ class Brick:
 		self.outline = brick_outline
 		self.rect = brick #we put it as brick outline so that ball does not draw over brick
 		
-		
-		
 
 class Grid:
-	def __init__(self, my_brick, ball):
+	def __init__(self, paddle, ball):
 		# ball = Ball()
 		self.width = 500 #window width
 		self.height = 700 #window height
-		self.my_brick = my_brick
+		self.paddle = paddle
 		self.wall_l = 0
 		self.wall_r = 0
 		self.ball = ball
-		self.ball.brick = self.my_brick #for collidepoint w ball
-		self.ball.grid = self
+		self.ball.brick = paddle #for collidepoint w ball
 		self.increments = 0
 		
 
@@ -340,81 +316,3 @@ class Grid:
 				self.bricks.append(brick_)
 				self.ball.bricks.append(brick_)
 				self.increments += 1
-			
-			
-		# brick = Brick(0, 0, 50, 25)
-		# left = brick.left
-		# top = brick.top
-		# width = brick.width
-		# height = brick.height
-		# brick.create_brick(left, top, width, height)
-	
-	def generate_walls(self):
-		wall_l = pygame.draw.line(screen, (0,0,0), (1,0), (1, 700))
-		wall_r = pygame.draw.line(screen, (0,0,0), (499,0), (499, 700))
-		self.wall_l = wall_l
-		self.wall_r = wall_r
-		
-    
-		
-	
-	
-
-	# def boundaries(self):
-	# 	if self.brick.collidepoint(self.wall_r): #have it so if ball collides with a wall object?
-	# 		self.brick.left = 400
-	# 	elif self.brick.collidepoint(self.wall_r):
-	# 		self.brick.left = 0
-
-
-
-
-
-# mixer.init() 
-# # mixer.music.load("RLbeat2.mp3") 
-# # mixer.music.set_volume(0.7) 
-# # mixer.music.play(-1, 0.0) 
-
-
-
-# paddle = Brick(200, 600, 100, 10) #paddle
-# paddle.generate_paddle()
-
-# ball = Ball()
-# ball.generate_ball()
-
-# grid = Grid(paddle, ball)
-# # grid.my_brick.create_brick()
-# grid.generate_walls()
-# grid.generate_grid() 
-# # grid.ball.draw_ball()
-
-
-
-# # grid = Grid(brick)
-
-
-  
-# # Variable to keep our game loop running 
-# running = True
-
-
-# while running:
-# 	clock.tick(120)
-# 	ball.physics_move()
-# 	for event in pygame.event.get():
-# 		# grid.ball.physics_move() #interesting mechanic
-# 		if event.type == pygame.QUIT:
-# 			running = False
-# 		if event.type == pygame.KEYDOWN:
-# 			if event.key == pygame.K_ESCAPE: #ESCAPE = QUIT BUTTON
-# 				running = False
-	
-		
-# 	keys = pygame.key.get_pressed()
-# 	if keys[pygame.K_LEFT]:
-# 		paddle.move_left()	
-# 	elif keys[pygame.K_RIGHT]:
-# 		paddle.move_right()
-		
-# 	pygame.display.flip()
