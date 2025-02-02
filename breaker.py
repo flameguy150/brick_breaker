@@ -1,6 +1,7 @@
 import pygame
 from breaker_util import Ball, Brick, Grid
 from pygame import mixer
+import os
 """
 
 
@@ -21,20 +22,23 @@ go through 3 levels
 
 need to implement physics and collision for side of bricks
 
+corner detection is not working so heres what im gonna do:
+store corner points for each brick and use that
+
 
 
 """
 
-pygame.display.init()
 
+song = os.path.join("sounds", "2nujabes_type_beat.mp3")
 
 mixer.init() 
-# mixer.music.load("RLbeat2.mp3") 
-# mixer.music.set_volume(0.7) 
-# mixer.music.play(-1, 0.0) 
+mixer.music.load(song) 
+mixer.music.set_volume(0.7) 
+mixer.music.play(-1, 0.0) 
 
  
-rectangle_color = (255,0,0)
+
   
 # Define the dimensions of 
 # screen object(width,height) 
@@ -45,9 +49,6 @@ pygame.display.set_caption('brick breaker')
 
 
 
-
-move_left_ = False
-move_right_ = False
 
 clock = pygame.time.Clock()
 
@@ -61,24 +62,25 @@ clock = pygame.time.Clock()
 
 
 
+pygame.init()
 
+paddle = Brick(200, 600, 100, 10) #paddle
+paddle.generate_paddle()
 
+ball = Ball()
+ball.generate_ball()
 
-
-brick = Brick(200, 600, 100, 10)
-brick.create_stbrick()
-
-grid = Grid(brick)
+grid = Grid(paddle, ball)
 # grid.my_brick.create_brick()
 grid.generate_walls()
 grid.generate_grid() 
-grid.ball.draw_ball()
+# grid.ball.draw_ball()
 
 
 
 # grid = Grid(brick)
 
-pygame.display.flip() 
+
   
 # Variable to keep our game loop running 
 running = True
@@ -86,18 +88,21 @@ running = True
 
 while running:
 	clock.tick(120)
-	grid.ball.physics_move()
+	ball.physics_move()
 	for event in pygame.event.get():
+		# grid.ball.physics_move() #interesting mechanic
 		if event.type == pygame.QUIT:
 			running = False
-		pygame.display.flip()
-	brick.controls(event)
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_ESCAPE: #ESCAPE = QUIT BUTTON
+				running = False
+	
 		
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_LEFT]:
-		brick.move_left()	
+		paddle.move_left()	
 	elif keys[pygame.K_RIGHT]:
-		brick.move_right()
+		paddle.move_right()
 		
 	pygame.display.flip()
 
