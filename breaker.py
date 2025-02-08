@@ -61,21 +61,47 @@ clock = pygame.time.Clock()
 """ CLASSES  CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES CLASSES"""
 
 
+def mainloop():
+	paddle = Brick(200, 600, 100, 10) #paddle
+	paddle.generate_paddle()
+	ball = Ball()
+	ball.generate_ball()
+	grid = Grid(paddle, ball)
+	grid.generate_grid() 
 
+	
 pygame.init()
 
 paddle = Brick(200, 600, 100, 10) #paddle
 paddle.generate_paddle()
 
 ball = Ball()
-# ball2 = Ball()
-# balls = [ball, ball2]
-# for ball in balls:
 ball.generate_ball()
 
 grid = Grid(paddle, ball)
 
 grid.generate_grid() 
+running = True
+
+while running:
+	clock.tick(120)
+	ball.physics_move()
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			running = False
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_ESCAPE: #ESCAPE = QUIT BUTTON
+				running = False
+	keys = pygame.key.get_pressed()
+	if keys[pygame.K_LEFT]:
+		paddle.move_left()	
+	elif keys[pygame.K_RIGHT]:
+		paddle.move_right()
+		
+	pygame.display.flip()
+	
+pygame.quit()
+quit()
 
 
 
@@ -85,29 +111,29 @@ grid.generate_grid()
 
   
 # Variable to keep our game loop running 
-running = True
 
 
-while running:
-	clock.tick(120)
-	# for ball in balls:
-	ball.physics_move()
-	for event in pygame.event.get():
-		# grid.ball.physics_move() #interesting mechanic
-		if event.type == pygame.QUIT:
-			running = False
-		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_ESCAPE: #ESCAPE = QUIT BUTTON
-				running = False
+
+# while running:
+# 	clock.tick(120)
+# 	# for ball in balls:
+# 	ball.physics_move()
+# 	for event in pygame.event.get():
+# 		# grid.ball.physics_move() #interesting mechanic
+# 		if event.type == pygame.QUIT:
+# 			running = False
+# 		if event.type == pygame.KEYDOWN:
+# 			if event.key == pygame.K_ESCAPE: #ESCAPE = QUIT BUTTON
+# 				running = False
 	
 		
-	keys = pygame.key.get_pressed()
-	if keys[pygame.K_LEFT]:
-		paddle.move_left()	
-	elif keys[pygame.K_RIGHT]:
-		paddle.move_right()
+# 	keys = pygame.key.get_pressed()
+# 	if keys[pygame.K_LEFT]:
+# 		paddle.move_left()	
+# 	elif keys[pygame.K_RIGHT]:
+# 		paddle.move_right()
 		
-	pygame.display.flip()
+# 	pygame.display.flip()
 
 """
 		elif pygame.key.get_pressed()[pygame.K_LEFT]:
