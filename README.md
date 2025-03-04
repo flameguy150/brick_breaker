@@ -7,7 +7,7 @@
 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/brick_breaker.git
-cd brick_breake
+cd brick_breaker
 ```
 
 2. Install pygame
